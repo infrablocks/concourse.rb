@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    confidante (0.1.0.pre.0)
+    concourse.rb (0.1.0.pre.0)
       excon (~> 0.72)
 
 GEM
@@ -89,7 +89,7 @@ PLATFORMS
 
 DEPENDENCIES
   bundler (~> 2.0)
-  confidante!
+  concourse.rb!
   gem-release (~> 2.0)
   rake (~> 13.0)
   rake_circle_ci (~> 0.9)

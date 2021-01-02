@@ -5,7 +5,7 @@ require 'concourse/version'
 require 'date'
 
 Gem::Specification.new do |spec|
-  spec.name = 'confidante'
+  spec.name = 'concourse.rb'
   spec.version = Concourse::VERSION
   spec.authors = ['Toby Clemson']
   spec.email = ['tobyclemson@gmail.com']
