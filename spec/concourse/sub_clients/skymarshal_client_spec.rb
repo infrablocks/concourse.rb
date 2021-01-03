@@ -1,5 +1,7 @@
 require 'spec_helper'
 
+require 'time'
+
 RSpec.describe Concourse::SubClients::SkymarshalClient do
   context 'create_token' do
     context 'pre version 6.1' do
@@ -14,15 +16,15 @@ RSpec.describe Concourse::SubClients::SkymarshalClient do
             version: '4.0.0',
         })
 
-        one_hour_in_days = 1/24.0
-        expiry_date_time = DateTime.now + one_hour_in_days
+        one_hour_in_seconds = 60 * 60
+        expiry_date = Time.now + one_hour_in_seconds
         bearer_token =
             Build::Data.random_bearer_token_pre_version_6_1(
                 csrf: csrf_token)
         token_response_body =
             Build::ApiResponse.token_pre_version_6_1(
                 access_token: bearer_token,
-                expiry: expiry_date_time.iso8601)
+                expiry: expiry_date.iso8601)
 
         expected_request_headers = {}
             .merge(Concourse::Headers.content_type(
@@ -53,7 +55,7 @@ RSpec.describe Concourse::SubClients::SkymarshalClient do
         expect(token).to(eq(
             access_token: bearer_token,
             token_type: 'bearer',
-            expires_at: expiry_date_time.iso8601,
+            expires_at: expiry_date.iso8601,
             id_token: bearer_token))
       end
     end
@@ -69,11 +71,10 @@ RSpec.describe Concourse::SubClients::SkymarshalClient do
             version: '6.1.0',
         })
 
-        one_hour_in_days = 1/24.0
         one_hour_in_seconds = 60 * 60
 
-        response_date_time = DateTime.now
-        expiry_date_time = response_date_time + one_hour_in_days
+        response_date = Time.now
+        expiry_date = response_date + one_hour_in_seconds
 
         bearer_token = Build::Data.random_bearer_token_current
         id_token = Build::Data.random_id_token_current
@@ -105,7 +106,7 @@ RSpec.describe Concourse::SubClients::SkymarshalClient do
                 .and_return(double('token response',
                     status: 200,
                     headers: {
-                        "Date" => expiry_date_time.httpdate
+                        "Date" => response_date.httpdate
                     },
                     body: JSON.dump(token_response_body))))
 
@@ -116,7 +117,7 @@ RSpec.describe Concourse::SubClients::SkymarshalClient do
         expect(token).to(eq(
             access_token: bearer_token,
             token_type: 'bearer',
-            expires_at: expiry_date_time.iso8601,
+            expires_at: expiry_date.iso8601,
             id_token: id_token))
       end
     end

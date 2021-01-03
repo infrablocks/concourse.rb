@@ -1,7 +1,7 @@
 require 'faker'
 require 'openssl'
 require 'jwt'
-require 'date'
+require 'time'
 
 module Build
   module Data
@@ -64,16 +64,14 @@ module Build
     end
 
     def self.random_bearer_token_pre_version_6_1(overrides = {}, options = {})
-      one_hour_in_days = 1.0/24.0
+      one_hour_in_seconds = 60 * 60
 
       default_username = self.random_username
       default_csrf_token = self.random_csrf_token
       default_subject = self.random_subject
       default_email = self.random_email
       default_team_name = self.random_team_name
-      default_expiration_time = (DateTime.now + one_hour_in_days)
-          .to_time
-          .to_i
+      default_expiration_time = (Time.now + one_hour_in_seconds).to_i
 
       payload = {
           exp: default_expiration_time,
@@ -97,7 +95,7 @@ module Build
     end
 
     def self.random_id_token_current(overrides = {}, options = {})
-      one_hour_in_days = 1.0/24.0
+      one_hour_in_seconds = 60 * 60
 
       default_username = self.random_username
       default_issuer = self.random_issuer
@@ -107,9 +105,7 @@ module Build
       default_email_verified_flag = true
       default_at_hash = self.random_access_token_hash
       default_connector_id = 'local'
-      default_expiration_time = (DateTime.now + one_hour_in_days)
-          .to_time
-          .to_i
+      default_expiration_time = (Time.now + one_hour_in_seconds).to_i
 
       payload = {
           iss: default_issuer,

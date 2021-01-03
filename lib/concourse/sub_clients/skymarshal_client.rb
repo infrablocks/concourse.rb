@@ -1,5 +1,5 @@
 require 'semantic'
-require 'date'
+require 'time'
 require 'json'
 
 require 'concourse/urls'
@@ -70,22 +70,18 @@ module Concourse
 
       def token(token_response)
         token_response_date = @version >= VERSION_6_1 ?
-            DateTime.parse(
+            Time.parse(
                 token_response.headers[Concourse::HeaderNames.date]) :
             nil
         token_response_body =
             JSON.parse(token_response.body, symbolize_names: true)
-
-        seconds_in_a_day = 60 * 60 * 24
 
         @version >= VERSION_6_1 ?
             {
                 access_token: token_response_body[:access_token],
                 token_type: token_response_body[:token_type].downcase,
                 expires_at:
-                    (token_response_date +
-                        (token_response_body[:expires_in] /
-                            seconds_in_a_day))
+                    (token_response_date + token_response_body[:expires_in])
                         .iso8601,
                 id_token: token_response_body[:id_token]
             } :
