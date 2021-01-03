@@ -26,6 +26,8 @@ Gem::Specification.new do |spec|
   spec.required_ruby_version = '>= 2.6.0'
 
   spec.add_dependency 'excon', '~> 0.72'
+  spec.add_dependency 'dry-schema', '~> 0.5'
+  spec.add_dependency 'semantic', '~> 1.5'
 
   spec.add_development_dependency 'bundler', '~> 2.0'
   spec.add_development_dependency 'rake', '~> 13.0'
@@ -34,5 +36,8 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rake_ssh', '~> 0.4'
   spec.add_development_dependency 'rake_gpg', '~> 0.12'
   spec.add_development_dependency 'rspec', '~> 3.9'
+  spec.add_development_dependency 'jwt', '~> 2.2'
+  spec.add_development_dependency 'openssl', '~> 2.2'
+  spec.add_development_dependency 'faker', '~> 2.15'
   spec.add_development_dependency 'gem-release', '~> 2.0'
 end
