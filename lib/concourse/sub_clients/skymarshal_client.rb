@@ -1,5 +1,6 @@
 require 'semantic'
 require 'date'
+require 'json'
 
 require 'concourse/urls'
 require 'concourse/headers'

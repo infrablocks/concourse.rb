@@ -1,4 +1,6 @@
 require 'excon'
+require 'json'
+
 require 'concourse/sub_clients'
 
 module Concourse
