@@ -16,3 +16,5 @@ git pull
 
 git status
 git push --all
+git push --tags
+
