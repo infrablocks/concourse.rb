@@ -11,7 +11,7 @@ module Concourse
     end
 
     def self.basic(username, password)
-      "Basic #{Base64.encode64("#{username}:#{password}")}"
+      "Basic #{Base64.strict_encode64("#{username}:#{password}")}"
     end
   end
 
