@@ -3,6 +3,8 @@ require 'json'
 
 require 'concourse/sub_clients'
 
+Excon.defaults[:middlewares] << Excon::Middleware::RedirectFollower
+
 module Concourse
   class Client
     def initialize(options)
