@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    concourse.rb (0.2.0)
+    concourse.rb (0.3.0.pre.1)
       dry-schema (~> 0.5)
       excon (~> 0.72)
       semantic (~> 1.5)
