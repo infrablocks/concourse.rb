@@ -77,20 +77,20 @@ module Concourse
             JSON.parse(token_response.body, symbolize_names: true)
 
         @version >= VERSION_6_1 ?
-            {
+            Models::Token.new(
                 access_token: token_response_body[:access_token],
                 token_type: token_response_body[:token_type].downcase,
                 expires_at:
                     (token_response_date + token_response_body[:expires_in])
                         .iso8601,
                 id_token: token_response_body[:id_token]
-            } :
-            {
+            ) :
+            Models::Token.new(
                 access_token: token_response_body[:access_token],
                 token_type: token_response_body[:token_type].downcase,
                 expires_at: token_response_body[:expiry],
                 id_token: token_response_body[:access_token]
-            }
+            )
       end
     end
   end

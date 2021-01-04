@@ -52,11 +52,12 @@ RSpec.describe Concourse::SubClients::SkymarshalClient do
             username: username,
             password: password)
 
-        expect(token).to(eq(
-            access_token: bearer_token,
-            token_type: 'bearer',
-            expires_at: expiry_date.iso8601,
-            id_token: bearer_token))
+        expect(token)
+            .to(eq(Concourse::Models::Token.new(
+                access_token: bearer_token,
+                token_type: 'bearer',
+                expires_at: expiry_date.iso8601,
+                id_token: bearer_token)))
       end
     end
 
@@ -114,11 +115,12 @@ RSpec.describe Concourse::SubClients::SkymarshalClient do
             username: username,
             password: password)
 
-        expect(token).to(eq(
-            access_token: bearer_token,
-            token_type: 'bearer',
-            expires_at: expiry_date.iso8601,
-            id_token: id_token))
+        expect(token)
+            .to(eq(Concourse::Models::Token.new(
+                access_token: bearer_token,
+                token_type: 'bearer',
+                expires_at: expiry_date.iso8601,
+                id_token: id_token)))
       end
     end
   end
