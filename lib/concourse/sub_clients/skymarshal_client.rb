@@ -4,11 +4,14 @@ require 'json'
 
 require 'concourse/urls'
 require 'concourse/headers'
+require 'concourse/http'
 
 module Concourse
   module SubClients
     class SkymarshalClient
       VERSION_6_1 = Semantic::Version.new('6.1.0')
+
+      include Concourse::Http
 
       def initialize(options)
         @url = options[:url]
@@ -20,8 +23,10 @@ module Concourse
         headers = create_token_headers
         body = create_token_body(parameters)
 
+        token_request = Http::Request.new(url, headers, body)
         token_response = Excon.post(url, headers: headers, body: body)
 
+        assert_successful(token_request, token_response)
         token(token_response)
       end
 

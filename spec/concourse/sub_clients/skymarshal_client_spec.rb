@@ -59,6 +59,48 @@ RSpec.describe Concourse::SubClients::SkymarshalClient do
                 expires_at: expiry_date.iso8601,
                 id_token: bearer_token)))
       end
+
+      it 'throws an exception if the underlying request is not successful' do
+        concourse_url = Build::Data.random_concourse_url
+        username = Build::Data.random_username
+        password = Build::Data.random_password
+
+        client = Concourse::SubClients::SkymarshalClient.new({
+            url: concourse_url,
+            version: '4.0.0',
+        })
+
+        expected_request_headers = {}
+            .merge(Concourse::Headers.content_type(
+                Concourse::ContentTypes::APPLICATION_WWW_FORM_URLENCODED))
+            .merge(Concourse::Headers.authorization(
+                Concourse::Authorization.basic(
+                    "fly", "Zmx5")))
+        expected_request_body = URI.encode_www_form({
+            grant_type: 'password',
+            username: username,
+            password: password,
+            scope: 'openid+profile+email+federated:id+groups'
+        })
+
+        expect(Excon)
+            .to(receive(:post)
+                .with(Concourse::Urls.sky_token_url(concourse_url),
+                    headers: expected_request_headers,
+                    body: expected_request_body)
+                .and_return(double('token response',
+                    status: 401,
+                    body: JSON.dump({
+                        error: "access_denied",
+                        error_description: "Invalid username or password"
+                    }))))
+
+        expect {
+          client.create_token(
+              username: username,
+              password: password)
+        }.to(raise_error(Concourse::Errors::ApiError))
+      end
     end
 
     context 'post version 6.1' do
@@ -121,6 +163,48 @@ RSpec.describe Concourse::SubClients::SkymarshalClient do
                 token_type: 'bearer',
                 expires_at: expiry_date.iso8601,
                 id_token: id_token)))
+      end
+
+      it 'throws an exception if the underlying request is not successful' do
+        concourse_url = Build::Data.random_concourse_url
+        username = Build::Data.random_username
+        password = Build::Data.random_password
+
+        client = Concourse::SubClients::SkymarshalClient.new({
+            url: concourse_url,
+            version: '6.1.0',
+        })
+
+        expected_request_headers = {}
+            .merge(Concourse::Headers.content_type(
+                Concourse::ContentTypes::APPLICATION_WWW_FORM_URLENCODED))
+            .merge(Concourse::Headers.authorization(
+                Concourse::Authorization.basic(
+                    "fly", "Zmx5")))
+        expected_request_body = URI.encode_www_form({
+            grant_type: 'password',
+            username: username,
+            password: password,
+            scope: 'openid profile email federated:id groups'
+        })
+
+        expect(Excon)
+            .to(receive(:post)
+                .with(Concourse::Urls.sky_issuer_token_url(concourse_url),
+                    headers: expected_request_headers,
+                    body: expected_request_body)
+                .and_return(double('token response',
+                    status: 401,
+                    body: JSON.dump({
+                        error: "access_denied",
+                        error_description: "Invalid username or password"
+                    }))))
+
+        expect {
+          client.create_token(
+              username: username,
+              password: password)
+        }.to(raise_error(Concourse::Errors::ApiError))
       end
     end
   end
