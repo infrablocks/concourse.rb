@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Concourse
   module Urls
     def self.api_url(concourse_url)
@@ -15,8 +17,6 @@ module Concourse
     def self.info_url(concourse_url)
       "#{api_url(concourse_url)}/info"
     end
-
-    private
 
     def self.base_url(concourse_url)
       concourse_url.chomp('/')

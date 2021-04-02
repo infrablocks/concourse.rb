@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Concourse
   module Http
     class Request
@@ -26,15 +28,16 @@ module Concourse
       def state
         [@url, @headers, @body]
       end
-
     end
 
     def assert_successful(request, response)
-      unless response.status < 400
-        raise Errors::ApiError.new(
-            request: request,
-            response: response)
-      end
+      raise api_error(request, response) unless response.status < 400
+    end
+
+    private
+
+    def api_error(request, response)
+      Errors::ApiError.new(request: request, response: response)
     end
   end
 end

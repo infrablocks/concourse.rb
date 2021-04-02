@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'concourse/version'
 require_relative 'concourse/models'
 require_relative 'concourse/errors'

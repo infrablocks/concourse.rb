@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'base64'
 
 module Concourse
@@ -17,25 +19,25 @@ module Concourse
 
   module HeaderNames
     def self.content_type
-      "Content-Type"
+      'Content-Type'
     end
-    
+
     def self.authorization
-      "Authorization"
+      'Authorization'
     end
 
     def self.date
-      "Date"
+      'Date'
     end
   end
 
   module Headers
     def self.content_type(content_type)
-      {Concourse::HeaderNames.content_type => content_type}
+      { Concourse::HeaderNames.content_type => content_type }
     end
 
     def self.authorization(authorization)
-      {Concourse::HeaderNames.authorization => authorization}
+      { Concourse::HeaderNames.authorization => authorization }
     end
   end
 end

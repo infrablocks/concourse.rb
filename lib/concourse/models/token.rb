@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Concourse
   module Models
     class Token
