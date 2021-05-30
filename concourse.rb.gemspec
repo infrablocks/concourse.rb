@@ -19,8 +19,8 @@ files = %w[
 Gem::Specification.new do |spec|
   spec.name = 'concourse.rb'
   spec.version = Concourse::VERSION
-  spec.authors = ['Toby Clemson']
-  spec.email = ['tobyclemson@gmail.com']
+  spec.authors = ['InfraBlocks Maintainers']
+  spec.email = ['maintainers@infrablocks.io']
 
   spec.summary = 'A Ruby SDK for the Concourse CI API.'
   spec.description = 'A Ruby SDK for the Concourse CI API.'
