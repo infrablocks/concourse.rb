@@ -8,8 +8,8 @@ module Concourse
         @response = parameters[:response]
 
         super("Request to #{@request.url} failed " \
-          "with status #{@response.status} " \
-          "and body #{@response.body}")
+              "with status #{@response.status} " \
+              "and body #{@response.body}")
       end
     end
   end
