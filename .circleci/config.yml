@@ -1,8 +1,6 @@
 version: 2.1
-
 orbs:
   slack: circleci/slack@4.4.2
-
 jobs:
   build:
     working_directory: ~/source
@@ -19,7 +17,6 @@ jobs:
           event: pass
           channel: builds
           template: SLACK_SUCCESS_NOTIFICATION
-
   test:
     working_directory: ~/source
     docker:
@@ -35,7 +32,6 @@ jobs:
           event: pass
           channel: builds
           template: SLACK_SUCCESS_NOTIFICATION
-
   prerelease:
     working_directory: ~/source
     docker:
@@ -55,7 +51,6 @@ jobs:
           event: pass
           channel: builds
           template: SLACK_SUCCESS_NOTIFICATION
-
   release:
     working_directory: ~/source
     docker:
@@ -75,7 +70,16 @@ jobs:
           event: pass
           channel: builds
           template: SLACK_SUCCESS_NOTIFICATION
-
+  merge_pull_request:
+    working_directory: ~/source
+    docker:
+      - image: ruby:2.6.0
+    steps:
+      - checkout
+      - run: ./scripts/ci/common/install-git-crypt.sh
+      - run: ./scripts/ci/common/install-gpg-key.sh
+      - run: ./scripts/ci/common/configure-git.sh
+      - run: ./scripts/ci/steps/merge-pull-request.sh
 workflows:
   version: 2
   pipeline:
@@ -88,6 +92,12 @@ workflows:
             - slack
           requires:
             - build
+      - merge_pull_request:
+          requires:
+            - test
+          filters:
+            branches:
+              only: /^dependabot.*/
       - prerelease:
           context:
             - slack
