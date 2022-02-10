@@ -21,7 +21,7 @@ GEM
     concurrent-ruby (1.1.9)
     diff-lcs (1.4.4)
     docile (1.4.0)
-    excon (0.89.0)
+    excon (0.91.0)
     faker (2.19.0)
       i18n (>= 1.6, < 2)
     faraday (1.9.3)
