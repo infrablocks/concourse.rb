@@ -1,6 +1,8 @@
 version: 2.1
+
 orbs:
   slack: circleci/slack@4.4.2
+
 jobs:
   build:
     working_directory: ~/source
@@ -32,6 +34,7 @@ jobs:
           event: pass
           channel: builds
           template: SLACK_SUCCESS_NOTIFICATION
+
   prerelease:
     working_directory: ~/source
     docker:
@@ -51,6 +54,7 @@ jobs:
           event: pass
           channel: builds
           template: SLACK_SUCCESS_NOTIFICATION
+
   release:
     working_directory: ~/source
     docker:
@@ -70,6 +74,7 @@ jobs:
           event: pass
           channel: builds
           template: SLACK_SUCCESS_NOTIFICATION
+
   merge_pull_request:
     working_directory: ~/source
     docker:
@@ -88,6 +93,7 @@ jobs:
           event: pass
           channel: builds
           template: SLACK_SUCCESS_NOTIFICATION
+
 workflows:
   version: 2
   pipeline:
@@ -100,6 +106,11 @@ workflows:
             - slack
           requires:
             - build
+          filters:
+            branches:
+              only:
+                - main
+                - /^dependabot.*/
       - merge_pull_request:
           context:
             - slack
