@@ -16,7 +16,7 @@ files = %w[
   README.md
 ]
 
-Gem::Specification.new do |spec| # rubocop:disable Gemspec/RequireMFA
+Gem::Specification.new do |spec|
   spec.name = 'concourse.rb'
   spec.version = Concourse::VERSION
   spec.authors = ['InfraBlocks Maintainers']
