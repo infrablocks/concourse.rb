@@ -3,6 +3,24 @@ version: 2.1
 orbs:
   slack: circleci/slack@4.4.2
 
+commands:
+  notify:
+    steps:
+      - slack/notify:
+          event: fail
+          channel: dev
+          template: SLACK_FAILURE_NOTIFICATION
+      - slack/notify:
+          event: pass
+          channel: builds
+          template: SLACK_SUCCESS_NOTIFICATION
+  configure_for_release:
+    steps:
+      - run: ./scripts/ci/common/install-git-crypt.sh
+      - run: ./scripts/ci/common/install-gpg-key.sh
+      - run: ./scripts/ci/common/configure-git.sh
+      - run: ./scripts/ci/common/configure-rubygems.sh
+
 jobs:
   build:
     docker:
@@ -10,84 +28,41 @@ jobs:
     steps:
       - checkout
       - run: ./scripts/ci/steps/build.sh
-      - slack/notify:
-          event: fail
-          channel: dev
-          template: SLACK_FAILURE_NOTIFICATION
-      - slack/notify:
-          event: pass
-          channel: builds
-          template: SLACK_SUCCESS_NOTIFICATION
+      - notify
   test:
     docker:
       - image: ruby:2.7.5
     steps:
       - checkout
       - run: ./scripts/ci/steps/test.sh
-      - slack/notify:
-          event: fail
-          channel: dev
-          template: SLACK_FAILURE_NOTIFICATION
-      - slack/notify:
-          event: pass
-          channel: builds
-          template: SLACK_SUCCESS_NOTIFICATION
+      - notify
 
   prerelease:
     docker:
       - image: ruby:2.7.5
     steps:
       - checkout
-      - run: ./scripts/ci/common/install-git-crypt.sh
-      - run: ./scripts/ci/common/install-gpg-key.sh
-      - run: ./scripts/ci/common/configure-git.sh
-      - run: ./scripts/ci/common/configure-rubygems.sh
+      - configure_for_release
       - run: ./scripts/ci/steps/prerelease.sh
-      - slack/notify:
-          event: fail
-          channel: dev
-          template: SLACK_FAILURE_NOTIFICATION
-      - slack/notify:
-          event: pass
-          channel: builds
-          template: SLACK_SUCCESS_NOTIFICATION
+      - notify
 
   release:
     docker:
       - image: ruby:2.7.5
     steps:
       - checkout
-      - run: ./scripts/ci/common/install-git-crypt.sh
-      - run: ./scripts/ci/common/install-gpg-key.sh
-      - run: ./scripts/ci/common/configure-git.sh
-      - run: ./scripts/ci/common/configure-rubygems.sh
+      - configure_for_release
       - run: ./scripts/ci/steps/release.sh
-      - slack/notify:
-          event: fail
-          channel: dev
-          template: SLACK_FAILURE_NOTIFICATION
-      - slack/notify:
-          event: pass
-          channel: builds
-          template: SLACK_SUCCESS_NOTIFICATION
+      - notify
 
   merge_pull_request:
     docker:
       - image: ruby:2.7.5
     steps:
       - checkout
-      - run: ./scripts/ci/common/install-git-crypt.sh
-      - run: ./scripts/ci/common/install-gpg-key.sh
-      - run: ./scripts/ci/common/configure-git.sh
+      - configure_for_release
       - run: ./scripts/ci/steps/merge-pull-request.sh
-      - slack/notify:
-          event: fail
-          channel: dev
-          template: SLACK_FAILURE_NOTIFICATION
-      - slack/notify:
-          event: pass
-          channel: builds
-          template: SLACK_SUCCESS_NOTIFICATION
+      - notify
 
 workflows:
   version: 2
@@ -96,6 +71,11 @@ workflows:
       - build:
           context:
             - slack
+          filters:
+            branches:
+              only:
+                - main
+                - /^dependabot.*/
       - test:
           context:
             - slack
