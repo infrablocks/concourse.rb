@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
 module Concourse
-  VERSION = '0.5.0.pre.15'
+  VERSION = '0.5.0.pre.16'
 end
