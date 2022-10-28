@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    concourse.rb (0.5.0.pre.18)
+    concourse.rb (0.5.0.pre.19)
       excon (~> 0.72)
       semantic (~> 1.5)
 
@@ -163,4 +163,4 @@ DEPENDENCIES
   simplecov
 
 BUNDLED WITH
-   2.3.10
+   2.3.24
