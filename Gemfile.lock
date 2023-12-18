@@ -30,7 +30,7 @@ GEM
     docile (1.4.0)
     drb (2.2.0)
       ruby2_keywords
-    excon (0.106.0)
+    excon (0.108.0)
     faker (3.2.2)
       i18n (>= 1.8.11, < 2)
     faraday (2.7.11)
