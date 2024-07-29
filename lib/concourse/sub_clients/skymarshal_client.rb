@@ -26,7 +26,7 @@ module Concourse
         body = create_token_body(parameters)
 
         token_request = Http::Request.new(url, headers, body)
-        token_response = Excon.post(url, headers: headers, body: body)
+        token_response = Excon.post(url, headers:, body:)
 
         assert_successful(token_request, token_response)
         token(token_response)
@@ -71,9 +71,9 @@ module Concourse
         URI.encode_www_form(
           {
             grant_type: 'password',
-            username: username,
-            password: password,
-            scope: scope
+            username:,
+            password:,
+            scope:
           }
         )
       end

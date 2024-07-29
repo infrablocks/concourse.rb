@@ -37,7 +37,7 @@ module Concourse
     private
 
     def api_error(request, response)
-      Errors::ApiError.new(request: request, response: response)
+      Errors::ApiError.new(request:, response:)
     end
   end
 end

@@ -43,7 +43,7 @@ RSpec.describe Concourse::Client do
 
       version = '4.1.0'
 
-      info_data = Build::Data.random_info(version: version)
+      info_data = Build::Data.random_info(version:)
       info_response_body = Build::ApiResponse.info(info_data)
 
       allow(Excon)
@@ -62,7 +62,7 @@ RSpec.describe Concourse::Client do
         .to(eq(Concourse::SubClients::SkymarshalClient.new(
                  {
                    url: concourse_url,
-                   version: version
+                   version:
                  }
                )))
     end

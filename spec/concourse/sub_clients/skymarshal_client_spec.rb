@@ -37,7 +37,7 @@ RSpec.describe Concourse::SubClients::SkymarshalClient do
                       ))
                 .and_return(response_double(200, token_response_body)))
 
-        token = client.create_token(username: username, password: password)
+        token = client.create_token(username:, password:)
 
         expect(token)
           .to(eq(Concourse::Models::Token.new(
@@ -78,8 +78,8 @@ RSpec.describe Concourse::SubClients::SkymarshalClient do
 
         expect do
           client.create_token(
-            username: username,
-            password: password
+            username:,
+            password:
           )
         end.to(raise_error(Concourse::Errors::ApiError))
       end
@@ -107,7 +107,7 @@ RSpec.describe Concourse::SubClients::SkymarshalClient do
         token_response_body =
           Build::ApiResponse.token_current(
             access_token: bearer_token,
-            id_token: id_token,
+            id_token:,
             expires_in: Times.one_hour_in_seconds
           )
 
@@ -122,14 +122,14 @@ RSpec.describe Concourse::SubClients::SkymarshalClient do
                                   })
                 ))
 
-        token = client.create_token(username: username, password: password)
+        token = client.create_token(username:, password:)
 
         expect(token)
           .to(eq(Concourse::Models::Token.new(
                    access_token: bearer_token,
                    token_type: 'bearer',
                    expires_at: expiry_date.utc.localtime('+00:00').iso8601,
-                   id_token: id_token
+                   id_token:
                  )))
       end
 
@@ -161,8 +161,8 @@ RSpec.describe Concourse::SubClients::SkymarshalClient do
 
         expect do
           client.create_token(
-            username: username,
-            password: password
+            username:,
+            password:
           )
         end.to(raise_error(Concourse::Errors::ApiError))
       end
@@ -187,8 +187,8 @@ def token_request_body_pre_version_6_1(password, username)
   URI.encode_www_form(
     {
       grant_type: 'password',
-      username: username,
-      password: password,
+      username:,
+      password:,
       scope: 'openid+profile+email+federated:id+groups'
     }
   )
@@ -199,8 +199,8 @@ def token_request_body_current(password, username)
   URI.encode_www_form(
     {
       grant_type: 'password',
-      username: username,
-      password: password,
+      username:,
+      password:,
       scope: 'openid profile email federated:id groups'
     }
   )
@@ -209,8 +209,8 @@ end
 def response_double(status, body, headers = {})
   instance_double(
     Excon::Response,
-    status: status,
-    headers: headers,
+    status:,
+    headers:,
     body: JSON.dump(body)
   )
 end
