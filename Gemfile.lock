@@ -29,7 +29,7 @@ GEM
     diff-lcs (1.5.1)
     docile (1.4.0)
     drb (2.2.1)
-    excon (0.108.0)
+    excon (0.111.0)
     faker (3.4.2)
       i18n (>= 1.8.11, < 2)
     faraday (2.7.11)
